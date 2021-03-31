@@ -78,6 +78,7 @@ func getParamsInQuerystring(c *gin.Context, updateValueMap map[string]interface{
 		}
 	}
 }
+
 func getParamsInJson(c *gin.Context, updateValueMap map[string]interface{}) {
 	data, err := c.GetRawData()
 	if err != nil {
@@ -87,9 +88,9 @@ func getParamsInJson(c *gin.Context, updateValueMap map[string]interface{}) {
 
 	if len(data) > 0 {
 		var f interface{}
-		_ = json.Unmarshal(data, &f)
-		m, err := f.(map[string]interface{})
-		if !err {
+		err = json.Unmarshal(data, &f)
+		if err == nil {
+			m := f.(map[string]interface{})
 			for k, v := range m {
 				updateValueMap[k] = v
 			}
